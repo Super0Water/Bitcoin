@@ -9,7 +9,7 @@ x = response.json() #prob need to take this out when you can think later
 
 def coin_list(json):
     #function to grab the json of all cryptos on coingecko 
-    #and make into a string of crypto
+    #and make into a string of cryptos
     currency_list = []
     for names in range(len(json)):
         currency_list.append(json[names]["name"])
