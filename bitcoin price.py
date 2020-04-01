@@ -19,7 +19,7 @@ def get_universe_price(currency_list):
     #function to get all the current prices based on the currency list fetched earlier
     #need to figure out best way to fetch each price and append into json
     url_list = []
-    price_list ={}
+    price_list = {}
     for coins in currency_list:
         url ='https://api.coingecko.com/api/v3/simple/price?ids='+coins+'&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true'
         url_list.append(url)
@@ -27,10 +27,10 @@ def get_universe_price(currency_list):
         response = requests.get(coins)
         print(response.json())
         price_list[coins] = response.json()
-    print(price_list) 
+        return price_list
 
 
 
-currency_list = coin_list(x)
+currency_list = ['Bitcoin','Ethereum']
 
-get_universe_price(currency_list)
+print(get_universe_price(currency_list))
