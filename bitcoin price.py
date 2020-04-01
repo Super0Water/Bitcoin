@@ -2,10 +2,12 @@
 import requests
 import json
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+currency_list = ['bitcoin','ethereum']
 coin_url = 'https://api.coingecko.com/api/v3/coins/list'
 response = requests.get(coin_url)
-
-x = response.json() #prob need to take this out when you can think later
 
 def coin_list(json):
     #function to grab the json of all cryptos on coingecko 
@@ -26,11 +28,14 @@ def get_universe_price(currency_list):
     for coins in url_list:
         response = requests.get(coins)
         print(response.json())
-        price_list[coins] = response.json()
+        price_list.append(response.json())
         return price_list
 
+def historical_graph (price_list):
+    return none
 
 
-currency_list = ['Bitcoin','Ethereum']
+price_list = get_universe_price(currency_list)
+print(price_list)
 
-print(get_universe_price(currency_list))
+
