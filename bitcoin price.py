@@ -30,8 +30,9 @@ def get_universe_price(currency_list):
         print(response.json())
           #need to figure out best way to fetch each price and append into json 
           #FUCK FUCK FUCK HOW DO YOU MAKE JSON INTO DICT AND ADD IT TO PRICE_LIST DICT?
-        price_list[coins] = response.json() 
-        return price_list
+        temp_coin = response.json() 
+        price_list.update(temp_coin)
+    return price_list
 
 def historical_graph (price_list):
     return none
