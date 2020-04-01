@@ -12,6 +12,7 @@ response = requests.get(coin_url)
 def coin_list(json):
     #function to grab the json of all cryptos on coingecko 
     #and make into a string of cryptos
+    #prob deprecate this bullshit
     currency_list = []
     for names in range(len(json)):
         currency_list.append(json[names]["name"])
@@ -19,7 +20,6 @@ def coin_list(json):
 
 def get_universe_price(currency_list):
     #function to get all the current prices based on the currency list fetched earlier
-    #need to figure out best way to fetch each price and append into json
     url_list = []
     price_list = {}
     for coins in currency_list:
@@ -28,7 +28,9 @@ def get_universe_price(currency_list):
     for coins in url_list:
         response = requests.get(coins)
         print(response.json())
-        price_list.append(response.json())
+          #need to figure out best way to fetch each price and append into json 
+          #FUCK FUCK FUCK HOW DO YOU MAKE JSON INTO DICT AND ADD IT TO PRICE_LIST DICT?
+        price_list[coins] = response.json() 
         return price_list
 
 def historical_graph (price_list):
