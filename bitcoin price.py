@@ -5,6 +5,8 @@ import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import datetime
+
 currency_list = ['bitcoin','ethereum']
 coin_url = 'https://api.coingecko.com/api/v3/coins/list'
 response = requests.get(coin_url)
@@ -34,9 +36,19 @@ def get_universe_price(currency_list):
         price_list.update(temp_coin)
     return price_list
 
-def historical_graph (price_list):
+def historical_price (currency_list, date_list):
+    #function to pull historical prices
+    #need to pull each day b/c api sucks if you don't pay for this bullshit
+    date_list = []
+    for coins in currency_list:
+        for dates in date_list:
+            url = 'https://api.coingecko.com/api/v3/coins/'+coins'/history?date='+ date
+            url_list.append(url)
     return none
 
+def historical_graph(price_list):
+    #graph for price?
+    return none
 
 price_list = get_universe_price(currency_list)
 print(price_list)
