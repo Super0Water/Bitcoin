@@ -5,7 +5,7 @@ import json
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import datetime
+from datetime import datetime, timedelta
 
 currency_list = ['bitcoin','ethereum']
 coin_url = 'https://api.coingecko.com/api/v3/coins/list'
@@ -25,13 +25,14 @@ def current_price(currency_list):
     url_list = []
     price_list = {}
     for coins in currency_list:
+        #have to iterate because bulk coin list doesn't work all the time with the CoinGecko API
+        #look at other data sources in the future
         url ='https://api.coingecko.com/api/v3/simple/price?ids='+coins+'&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true'
         url_list.append(url)
-    for coins in url_list:
+    for coins in url_list: 
+        #We take the url list created above and do json request for each. Returns a dict/json
         response = requests.get(coins)
         print(response.json())
-          #need to figure out best way to fetch each price and append into json 
-          #FUCK FUCK FUCK HOW DO YOU MAKE JSON INTO DICT AND ADD IT TO PRICE_LIST DICT?
         temp_coin = response.json() 
         price_list.update(temp_coin)
     return price_list
@@ -47,11 +48,16 @@ def historical_price (currency_list, date_list):
             url_list.append(url)
     return None
 
+def date_list():
+    now = datetime.now(tz=None)
+    date_list = []
+    x = now
+    for days in range (14):
+        date_list.append(x)
+        x = now - timedelta(days = days)
+    return date_list
+
 def historical_graph(price_list):
     #graph for price?
     return None
-
-price_list =  current_price(currency_list)
-
-print(price_list)
 
