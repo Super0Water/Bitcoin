@@ -41,19 +41,21 @@ def historical_price (currency_list, dates):
     #need to pull each day b/c api sucks if you don't pay for this bullshit
     url_list = []
     history = {}
+    temp_history ={}
     for coins in currency_list: #something is happening here
         for date in dates:
             url = 'https://api.coingecko.com/api/v3/coins/'+coins+'/history?date='+ date
-            url_list.append(url)
+        
+            #need to figure out how to take only what i need. 
+            #updating dict overides b/c every API call has same headers
+            response = requests.get(url)
+            temp_coin = response.json() 
+            #temp_history = {date:{ temp_coin['id']:temp_coin['market_data']['current_price']['usd']}}
 
-    for link in url_list: 
-        #need to figure out how to take only what i need. 
-        #updating dict overides b/c every API call has same headers
-
-        response = requests.get(link)
-        temp_coin = response.json() 
-        history.update(temp_coin)
-    print(history)
+            temp_history[date] = { temp_coin['id']:temp_coin['market_data']['current_price']['usd']}
+        
+        
+    print(temp_history)
     return history
 
 def date_list():
