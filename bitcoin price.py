@@ -39,10 +39,9 @@ def current_price(currency_list):
 def historical_price (currency_list, dates):
     #function to pull historical prices
     #need to pull each day b/c api sucks if you don't pay for this bullshit
-    url_list = []
     history = {}
     temp_history ={}
-    for coins in currency_list: #something is happening here
+    for coins in currency_list: 
         for date in dates:
             url = 'https://api.coingecko.com/api/v3/coins/'+coins+'/history?date='+ date
         
@@ -52,10 +51,9 @@ def historical_price (currency_list, dates):
             temp_coin = response.json() 
             #temp_history = {date:{ temp_coin['id']:temp_coin['market_data']['current_price']['usd']}}
 
-            temp_history[date] = { temp_coin['id']:temp_coin['market_data']['current_price']['usd']}
+            temp_history[date]= {temp_coin['market_data']['current_price']['usd']}
         
-        
-    print(temp_history)
+            history.update(temp_history)
     return history
 
 def date_list():
@@ -67,9 +65,13 @@ def date_list():
         now = now - timedelta(days = days+1)
     return dates
 
-def historical_graph(price_list):
-    #graph for price?
+def historical_graph(history):
+    dates = list(history.keys())
+    prices = list(history.values())
+    plt.plot(dates,prices)
+    
     return None
 
 x = date_list()
 y = historical_price(currency_list,x)
+historical_graph(y)
