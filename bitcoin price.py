@@ -7,7 +7,6 @@ import seaborn as sns
 
 from datetime import datetime, timedelta
 
-currency_list = ['bitcoin','ethereum']
 coin_url = 'https://api.coingecko.com/api/v3/coins/list'
 response = requests.get(coin_url)
 
@@ -20,7 +19,7 @@ def coin_list(json):
         currency_list.append(json[names]["name"])
     return currency_list
 
-def current_price(currency_list):
+def current_price(currency):
     #function to get all the current prices based on the currency list fetched earlier
     url_list = []
     price_list = {}
@@ -36,24 +35,17 @@ def current_price(currency_list):
         price_list.update(temp_coin)
     return price_list
 
-def historical_price (currency_list, dates):
+def historical_price (currency, dates):
     #function to pull historical prices
     #need to pull each day b/c api sucks if you don't pay for this bullshit
     history = {}
     temp_history ={}
-    for coins in currency_list: 
-        for date in dates:
-            url = 'https://api.coingecko.com/api/v3/coins/'+coins+'/history?date='+ date
-        
-            #need to figure out how to take only what i need. 
-            #updating dict overides b/c every API call has same headers
-            response = requests.get(url)
-            temp_coin = response.json() 
-            #temp_history = {date:{ temp_coin['id']:temp_coin['market_data']['current_price']['usd']}}
-
-            temp_history[date]= {temp_coin['market_data']['current_price']['usd']}
-        
-            history.update(temp_history)
+    for date in dates:
+        url = 'https://api.coingecko.com/api/v3/coins/'+currency+'/history?date='+ date
+        response = requests.get(url)
+        temp_coin = response.json() 
+        temp_history[date]= temp_coin['market_data']['current_price']['usd']
+        history.update(temp_history)
     return history
 
 def date_list():
@@ -68,10 +60,14 @@ def date_list():
 def historical_graph(history):
     dates = list(history.keys())
     prices = list(history.values())
-    plt.plot(dates,prices)
-    
-    return None
 
+    plt.plot_date(dates,prices, linestyle='--',label='Price')
+    plt.xticks(dates, rotation='vertical')
+  
+    plt.tight_layout()
+    plt.show()
+    
+currency = input("Enter your Cryptocurrency: ")
 x = date_list()
-y = historical_price(currency_list,x)
+y = historical_price(currency,x)
 historical_graph(y)
